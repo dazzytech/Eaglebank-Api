@@ -52,4 +52,4 @@ Full details available in Swagger UI.
 - adding payee mandates
 - adding docker capability
 - running in AWS
-- add mySql DB or Postgres
+- add mySql DB or Postgres (maybe test containers for testing)
