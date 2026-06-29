@@ -47,8 +47,8 @@ Full details available in Swagger UI.
 
 # Potential Improvements 
 
-- redis caching
-- rate limiting
+- redis caching (bank account details wont change very often and only changed by user, same for User data)
+- rate limiting 
 - adding payee mandates
 - adding docker capability
 - running in AWS
