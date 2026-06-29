@@ -4,6 +4,8 @@ Spring boot application which is the backend api for a fictional bank
 # Running the application
 Using Maven
 
+```mvn clean compile```
+
 ```mvn spring-boot:run```
 
 The API will start on:
