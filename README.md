@@ -4,6 +4,8 @@ Spring boot application which is the backend api for a fictional bank
 # Running the application
 Using Maven
 
+```mvn clean compile```
+
 ```mvn spring-boot:run```
 
 The API will start on:
@@ -45,9 +47,9 @@ Full details available in Swagger UI.
 
 # Potential Improvements 
 
-- redis caching
-- rate limiting
+- redis caching (bank account details wont change very often and only changed by user, same for User data)
+- rate limiting 
 - adding payee mandates
 - adding docker capability
 - running in AWS
-- add mySql DB or Postgres
+- add mySql DB or Postgres (maybe test containers for testing)
