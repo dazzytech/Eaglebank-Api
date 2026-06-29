@@ -17,6 +17,7 @@ import com.eagle_bank_api.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -66,7 +67,7 @@ public class TransactionService {
         return transactionMapper.toResponse(tx);
     }
 
-    public ListTransactionsResponseDto listTransactions(User user,
+    public ListTransactionsResponseDto listTransactionsPage(User user,
                                                         Integer pageNumber,
                                                         Integer pageSize,
                                                         String accountNumber) {
@@ -74,6 +75,21 @@ public class TransactionService {
 
         Page<Transaction> txs = transactionRepository.findByAccount(account,
                 PageRequest.of(pageNumber, pageSize, Sort.by("createdTimestamp").descending()));
+        List<TransactionResponseDto> list = txs.stream()
+                .map(transactionMapper::toResponse)
+                .collect(Collectors.toList());
+
+        ListTransactionsResponseDto resp = new ListTransactionsResponseDto();
+        resp.setTransactions(list);
+        return resp;
+    }
+
+    public ListTransactionsResponseDto listTransactions(User user,
+                                                        String accountNumber) {
+        BankAccount account = getAccount(user, accountNumber);
+
+        Page<Transaction> txs = transactionRepository.findByAccount(account,
+                Pageable.unpaged(Sort.by("createdTimestamp").descending()));
         List<TransactionResponseDto> list = txs.stream()
                 .map(transactionMapper::toResponse)
                 .collect(Collectors.toList());

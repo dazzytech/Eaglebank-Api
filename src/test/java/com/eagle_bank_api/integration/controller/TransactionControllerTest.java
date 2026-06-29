@@ -120,11 +120,22 @@ public class TransactionControllerTest extends BaseIntegrationTest {
 
         testTransactionHelper.createRandomSequenceTransactionsForAccount(account, user, 10);
 
-        mockMvc.perform(get("/v1/accounts/" + account.getAccountNumber() + "/transactions")
+        mockMvc.perform(get("/v1/accounts/" + account.getAccountNumber() + "/transactions/paged")
                         .param("page", "0")
                         .param("size", "5"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.transactions.length()").value(5));
+    }
+
+    @Test
+    void listTransactions_withoutPagination_returnsPageOf10() throws Exception {
+        testTransactionHelper.createSeedTransactionForAccount(account, user, 1000.00);
+
+        testTransactionHelper.createRandomSequenceTransactionsForAccount(account, user, 9);
+
+        mockMvc.perform(get("/v1/accounts/" + account.getAccountNumber() + "/transactions"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.transactions.length()").value(10));
     }
 
     @Test

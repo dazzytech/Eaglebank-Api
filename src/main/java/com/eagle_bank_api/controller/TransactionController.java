@@ -28,13 +28,20 @@ public class TransactionController {
                 .body(transactionService.createTransaction(userService.getAuthenticatedUser(auth), accountNumber, request));
     }
 
-    @GetMapping
-    public ListTransactionsResponseDto listTransactions(Authentication auth,
+    @GetMapping("/paged")
+    public ListTransactionsResponseDto listTransactionsPage(Authentication auth,
                                                         @RequestParam Integer page,
                                                         @RequestParam Integer size,
                                                         @PathVariable String accountNumber) {
 
-        return transactionService.listTransactions(userService.getAuthenticatedUser(auth), page, size, accountNumber);
+        return transactionService.listTransactionsPage(userService.getAuthenticatedUser(auth), page, size, accountNumber);
+    }
+
+    @GetMapping
+    public ListTransactionsResponseDto listTransactions(Authentication auth,
+                                                        @PathVariable String accountNumber) {
+
+        return transactionService.listTransactions(userService.getAuthenticatedUser(auth), accountNumber);
     }
 
     @GetMapping("/{transactionId}")

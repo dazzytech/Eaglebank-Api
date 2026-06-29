@@ -390,6 +390,73 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
+  /v1/accounts/{accountNumber}/transactions/paged:
+    get:
+      tags:
+        - transaction
+      description: List transactions
+      operationId: listAccountTransaction
+      parameters:
+        - name: accountNumber
+          in: path
+          description: Account number of the bank account
+          required: true
+          schema:
+            type: string
+            pattern: ^01\d{6}$
+        - name: page
+          in: path
+          description: Page index to be returned
+          required: true
+          schema:
+            type: integer
+            pattern: ^01\d{4}$
+        - name: size
+          in: path
+          description: Number of transactions to be returned in a page
+          required: true
+          schema:
+            type: integer
+            pattern: ^01\d{4}$
+      security:
+        - bearerAuth: [ ]
+      responses:
+        '200':
+          description: The list of transaction details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListTransactionsResponse'
+        '400':
+          description: The request didn't supply all the necessary data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestErrorResponse"
+        '401':
+          description: Access token is missing or invalid
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        '403':
+          description: The user is not allowed to access the transactions
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        '404':
+          description: Bank account was not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        '500':
+          description: An unexpected error occurred
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /v1/accounts/{accountNumber}/transactions/{transactionId}:
     get:
       tags:
